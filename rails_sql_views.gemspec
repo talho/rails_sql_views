@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = %q{rails_sql_views}
-  s.version = "0.8.0.1.benchmark"
+  s.version = "0.8.0.3.benchmark"
 
   s.required_rubygems_version = Gem::Requirement.new("> 1.3.1") if s.respond_to? :required_rubygems_version=
   s.authors = ["Anthony Eden"]
-  s.date = %q{2011-05-12}
+  s.date = %q{2011-05-13}
   s.description = %q{Adds support for using SQL views within ActiveRecord}
   s.email = %q{josh@technicalpickles.com}
   s.extra_rdoc_files = [
@@ -34,6 +34,7 @@ Gem::Specification.new do |s|
     "lib/rails_sql_views/connection_adapters/oracleenhanced_adapter.rb.orig",
     "lib/rails_sql_views/connection_adapters/postgresql_adapter.rb",
     "lib/rails_sql_views/connection_adapters/postgresql_adapter.rb.orig",
+    "lib/rails_sql_views/connection_adapters/sqlite3_adapter.rb",
     "lib/rails_sql_views/connection_adapters/sqlite_adapter.rb",
     "lib/rails_sql_views/connection_adapters/sqlserver_adapter.rb",
     "lib/rails_sql_views/loader.rb",
