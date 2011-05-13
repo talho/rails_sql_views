@@ -8,7 +8,6 @@ module RailsSqlViews
         if ActiveRecord::ConnectionAdapters.const_defined?("#{db}Adapter")
           require "rails_sql_views/connection_adapters/#{db.downcase}_adapter"
           ActiveRecord::ConnectionAdapters.const_get("#{db}Adapter").class_eval do
-            puts "including #{db}Adapter"
             include RailsSqlViews::ConnectionAdapters::AbstractAdapter
             include RailsSqlViews::ConnectionAdapters.const_get("#{db}Adapter")
           end
