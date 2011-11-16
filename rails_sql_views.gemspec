@@ -5,7 +5,7 @@
 
 Gem::Specification.new do |s|
   s.name = %q{rails_sql_views}
-  s.version = "0.8.0.4.benchmark"
+  s.version = "0.8.0.5.benchmark"
 
   s.required_rubygems_version = Gem::Requirement.new("> 1.3.1") if s.respond_to? :required_rubygems_version=
   s.authors = ["Anthony Eden"]
@@ -28,6 +28,7 @@ Gem::Specification.new do |s|
     "lib/rails_sql_views/connection_adapters/abstract/schema_statements.rb",
     "lib/rails_sql_views/connection_adapters/abstract_adapter.rb",
     "lib/rails_sql_views/connection_adapters/mysql_adapter.rb",
+    "lib/rails_sql_views/connection_adapters/mysql2_adapter.rb",
     "lib/rails_sql_views/connection_adapters/oci_adapter.rb",
     "lib/rails_sql_views/connection_adapters/oracle_adapter.rb",
     "lib/rails_sql_views/connection_adapters/oracleenhanced_adapter.rb",
