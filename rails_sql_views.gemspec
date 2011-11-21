@@ -5,7 +5,7 @@
 
 Gem::Specification.new do |s|
   s.name = %q{rails_sql_views}
-  s.version = "0.8.0.5.benchmark"
+  s.version = "0.8.0.6.benchmark"
 
   s.required_rubygems_version = Gem::Requirement.new("> 1.3.1") if s.respond_to? :required_rubygems_version=
   s.authors = ["Anthony Eden"]
