@@ -43,7 +43,8 @@ module RailsSqlViews
         end
 
         views.each do |view|
-          structure += select_one("SHOW CREATE VIEW #{quote_table_name(view)}")["Create View"] + ";\n\n"
+          _statement = convert_statement(select_one("SHOW CREATE VIEW #{quote_table_name(view)}")["Create View"])
+          structure += "CREATE VIEW #{quote_table_name(view)} AS #{_statement};\n\n"
         end
 
         return structure
@@ -62,7 +63,7 @@ module RailsSqlViews
       
       private
       def convert_statement(s)
-        s.gsub!(/.* AS [(]?(select .*)[)]?/, '\1')
+        s.gsub!(/.* AS ([(]?select .*)/, '\1')
       end
     end
   end
