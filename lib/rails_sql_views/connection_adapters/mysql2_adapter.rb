@@ -4,10 +4,10 @@ module RailsSqlViews
       REQUIRED_METHODS = [:supports_views?]
 
       def self.included(base)
-        alias_method :structure_dump_without_views, :structure_dump
-        alias_method :structure_dump, :structure_dump_with_views
-
         base.class_eval do
+          alias_method :structure_dump_without_views, :structure_dump
+          alias_method :structure_dump, :structure_dump_with_views
+
           def self.method_added(method)
             public(method) if REQUIRED_METHODS.include?(method) && !self.public_method_defined?(method)
           end
