@@ -36,7 +36,7 @@ module RailsSqlViews
         nonview_tables(name) + views(name)
       end
       
-      def structure_dump
+      def structure_dump_with_views
         structure = ""
         base_tables.each do |table|
           structure += select_one("SHOW CREATE TABLE #{quote_table_name(table)}")["Create Table"] + ";\n\n"
