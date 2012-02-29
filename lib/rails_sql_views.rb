@@ -23,6 +23,8 @@
 
 $:.unshift(File.dirname(__FILE__))
 
+require 'rails_sql_views/railtie' if defined?(Rails)
+
 require 'active_record'
 
 require 'core_ext/module'

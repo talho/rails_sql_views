@@ -13,8 +13,10 @@ module RailsSqlViews
       def create_view(name, select_query, options={})
         if supports_views?
           view_definition = ViewDefinition.new(self, select_query)
-
-          yield view_definition
+          
+          if block_given?
+            yield view_definition
+          end
 
           if options[:force]
             drop_view(name) rescue nil
@@ -57,9 +59,11 @@ module RailsSqlViews
       end
 
       def drop_table_with_cascade(table_name, options = {})
-        cmd = "DROP TABLE #{quote_table_name(table_name)}"
-        cmd += " CASCADE" if supports_drop_table_cascade?
-        execute cmd
+        if supports_drop_table_cascade?
+          execute "DROP TABLE #{quote_table_name(table_name)} CASCADE"
+        else
+          drop_table_without_cascade table_name, options
+        end
       end
       
       # Drop a view.
@@ -69,7 +73,7 @@ module RailsSqlViews
       #   database documentation to determine what drop behaviors are available.
       def drop_view(name, options={})
         if supports_views?
-          drop_sql = "DROP VIEW #{name}"
+          drop_sql = "DROP VIEW #{quote_table_name(name)}"
           drop_sql << " #{options[:drop_behavior]}" if options[:drop_behavior]
           execute drop_sql
         end
