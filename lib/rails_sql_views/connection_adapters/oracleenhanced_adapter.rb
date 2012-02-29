@@ -5,7 +5,7 @@ module RailsSqlViews
       def supports_views?
         true
       end
-      
+
       def base_tables(name = nil) #:nodoc:
         tables = []
         cursor = execute("SELECT TABLE_NAME FROM USER_TABLES", name)
@@ -15,7 +15,7 @@ module RailsSqlViews
         tables
       end
       alias nonview_tables base_tables
-      
+
       def views(name = nil) #:nodoc:
         views = []
         cursor = execute("SELECT VIEW_NAME FROM USER_VIEWS", name)
@@ -24,7 +24,7 @@ module RailsSqlViews
         end
         views
       end
-      
+
       # Get the view select statement for the specified table.
       def view_select_statement(view, name=nil)
         cursor = execute("SELECT TEXT FROM USER_VIEWS WHERE VIEW_NAME = '#{view}'", name)

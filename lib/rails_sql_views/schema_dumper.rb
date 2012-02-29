@@ -4,24 +4,24 @@ module RailsSqlViews
       base.alias_method_chain :trailer, :views
       base.alias_method_chain :dump, :views
       base.alias_method_chain :tables, :views_excluded
-      
-      # A list of views which should not be dumped to the schema. 
+
+      # A list of views which should not be dumped to the schema.
       # Acceptable values are strings as well as regexp.
       # This setting is only used if ActiveRecord::Base.schema_format == :ruby
       base.cattr_accessor :ignore_views
       base.ignore_views = []
       # Optional: specify the order that in which views are created.
       # This allows views to depend on and include fields from other views.
-      # It is not necessary to specify all the view names, just the ones that 
+      # It is not necessary to specify all the view names, just the ones that
       # need to be created first
       base.cattr_accessor :view_creation_order
       base.view_creation_order = []
     end
-    
+
     def trailer_with_views(stream)
       # do nothing...we'll call this later
     end
-    
+
     # Add views to the end of the dump stream
     def dump_with_views(stream)
       dump_without_views(stream)
@@ -39,7 +39,7 @@ module RailsSqlViews
       trailer_without_views(stream)
       stream
     end
-    
+
     # Add views to the stream
     def views(stream)
       if view_creation_order.empty?
@@ -59,11 +59,11 @@ module RailsSqlViews
           else
             raise StandardError, 'ActiveRecord::SchemaDumper.ignore_views accepts an array of String and / or Regexp values.'
           end
-        end 
+        end
         view(v, stream)
       end
     end
-    
+
     # Add the specified view to the stream
     def view(view, stream)
       columns = @connection.columns(view).collect { |c| c.name }
@@ -82,7 +82,7 @@ module RailsSqlViews
 
         v.puts "  end"
         v.puts
-        
+
         v.rewind
         stream.print v.read
       rescue => e
@@ -90,7 +90,7 @@ module RailsSqlViews
         stream.puts "#   #{e.message}"
         stream.puts
       end
-      
+
       stream
     end
 
