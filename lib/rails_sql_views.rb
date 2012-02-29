@@ -23,8 +23,6 @@
 
 $:.unshift(File.dirname(__FILE__))
 
-require 'rails_sql_views/railtie' if defined?(Rails)
-
 require 'active_record'
 
 require 'core_ext/module'
@@ -35,15 +33,19 @@ require 'rails_sql_views/connection_adapters/abstract_adapter'
 require 'rails_sql_views/schema_dumper'
 require 'rails_sql_views/loader'
 
-ActiveRecord::ConnectionAdapters::AbstractAdapter.class_eval do
-  include RailsSqlViews::ConnectionAdapters::SchemaStatements
-  def self.inherited(sub)
-    RailsSqlViews::Loader.load_extensions
+if defined?(Rails)
+  require 'rails_sql_views/railtie'
+else
+  ActiveRecord::ConnectionAdapters::AbstractAdapter.class_eval do
+    include RailsSqlViews::ConnectionAdapters::SchemaStatements
+    def self.inherited(sub)
+      RailsSqlViews::Loader.load_extensions
+    end
   end
-end
 
-ActiveRecord::SchemaDumper.class_eval do
-  include RailsSqlViews::SchemaDumper
-end
+  ActiveRecord::SchemaDumper.class_eval do
+    include RailsSqlViews::SchemaDumper
+  end
 
-RailsSqlViews::Loader.load_extensions
+  RailsSqlViews::Loader.load_extensions
+end

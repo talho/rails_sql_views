@@ -13,7 +13,7 @@ module RailsSqlViews
       def create_view(name, select_query, options={})
         if supports_views?
           view_definition = ViewDefinition.new(self, select_query)
-          
+
           if block_given?
             yield view_definition
           end
@@ -27,7 +27,7 @@ module RailsSqlViews
           if supports_view_columns_definition? && !view_definition.to_sql.blank?
             create_sql << "("
             create_sql << view_definition.to_sql
-            create_sql << ") " 
+            create_sql << ") "
           end
           create_sql << "AS #{view_definition.select_query}"
           create_sql << " WITH #{options[:check_option]} CHECK OPTION" if options[:check_option]
@@ -40,12 +40,12 @@ module RailsSqlViews
       # conventions, while maintaining legacy app compatibility.
       def create_mapping_view(old_name, new_name, options = {})
         return unless supports_views?
-        
+
         col_names = columns(old_name).collect { |col| col.name.to_sym }
         mapper = MappingDefinition.new(col_names)
-        
+
         yield mapper
-        
+
         if options[:force]
           drop_view(new_name) rescue nil
         end
@@ -65,7 +65,7 @@ module RailsSqlViews
           drop_table_without_cascade table_name, options
         end
       end
-      
+
       # Drop a view.
       # The +options+ hash can include the following keys:
       # [<tt>:drop_behavior</tt>]
