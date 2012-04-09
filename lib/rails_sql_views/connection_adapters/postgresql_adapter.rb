@@ -39,7 +39,7 @@ module RailsSqlViews
           SELECT COUNT(*)
             FROM information_schema.tables
            WHERE table_type IN ('BASE TABLE', 'VIEW')
-           WHERE table_name = '#{table.gsub(/(^"|"$)/,'')}'
+             AND table_name = '#{table.gsub(/(^"|"$)/,'')}'
              AND table_schema = #{schema ? "'#{schema}'" : "ANY (current_schemas(false))"}
         SQL
       end
