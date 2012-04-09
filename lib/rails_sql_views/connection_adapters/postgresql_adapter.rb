@@ -3,7 +3,7 @@ module RailsSqlViews
     module PostgreSQLAdapter
       def self.included(base)
         base.alias_method_chain :tables, :views_included# unless method_defined?(:tables_with_views_included)
-        base.alias_method_chain :table_exists?, :view_exists?# unless method_defined?(:table_exists_with_view_exists?)
+        base.alias_method_chain :table_exists?, :view_exists# unless method_defined?(:table_exists_with_view_exists?)
       end
       # Returns true as this adapter supports views.
       def supports_views?
