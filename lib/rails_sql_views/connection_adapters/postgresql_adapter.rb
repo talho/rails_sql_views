@@ -4,7 +4,7 @@ module RailsSqlViews
       def self.included(base)
         base.alias_method_chain :tables, :views
         base.alias_method_chain :table_exists?, :view
-	base.alias_method :disable_referential_integrity_without_views, :disable_referential_integrity
+	base.send :alias_method :disable_referential_integrity_without_views, :disable_referential_integrity
       end
       # Returns true as this adapter supports views.
       def supports_views?
