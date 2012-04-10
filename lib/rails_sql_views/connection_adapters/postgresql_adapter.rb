@@ -2,15 +2,16 @@ module RailsSqlViews
   module ConnectionAdapters
     module PostgreSQLAdapter
       def self.included(base)
-        base.alias_method_chain :tables, :views_included# unless method_defined?(:tables_with_views_included)
-        base.alias_method_chain :table_exists?, :view_exists# unless method_defined?(:table_exists_with_view_exists?)
+        base.alias_method_chain :tables, :views
+        base.alias_method_chain :table_exists?, :view
+	base.alias_method :disable_referential_integrity_without_views, :disable_referential_integrity
       end
       # Returns true as this adapter supports views.
       def supports_views?
         true
       end
 
-      def tables_with_views_included(name = nil)
+      def tables_with_views(name = nil)
         q = <<-SQL
         SELECT table_name, table_type
           FROM information_schema.tables
@@ -21,7 +22,7 @@ module RailsSqlViews
         query(q, name).map { |row| row[0] }
       end
       
-      def table_exists_with_view_exists?(name)
+      def table_exists_with_view?(name)
         name          = name.to_s
         schema, table = name.split('.', 2)
 
@@ -42,6 +43,17 @@ module RailsSqlViews
              AND table_name = '#{table.gsub(/(^"|"$)/,'')}'
              AND table_schema = #{schema ? "'#{schema}'" : "ANY (current_schemas(false))"}
         SQL
+      end
+
+      def disable_referential_integrity_without_views #:nodoc:
+        if supports_disable_referential_integrity?() then
+          execute(tables_without_views.collect { |name| "ALTER TABLE #{quote_table_name(name)} DISABLE TRIGGER ALL" }.join(";"))
+        end
+        yield
+      ensure
+        if supports_disable_referential_integrity?() then
+          execute(tables_without_views.collect { |name| "ALTER TABLE #{quote_table_name(name)} ENABLE TRIGGER ALL" }.join(";"))
+        end
       end
 
       def base_tables(name = nil)
