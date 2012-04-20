@@ -2,9 +2,9 @@ module RailsSqlViews
   module ConnectionAdapters
     module PostgreSQLAdapter
       def self.included(base)
-        base.alias_method_chain :tables, :views
-        base.alias_method_chain :table_exists?, :view
-	base.send :alias_method :disable_referential_integrity_without_views, :disable_referential_integrity
+        base.alias_method_chain :tables, :views unless base.method_defined?(:tables_without_views)
+        base.alias_method_chain :table_exists?, :view unless base.method_defined?(:table_exists_without_views?)
+	base.alias_method_chain :disable_referential_integrity, :views unless base.method_defined?(:disable_referential_integrity_without_views)
       end
       # Returns true as this adapter supports views.
       def supports_views?
@@ -45,7 +45,8 @@ module RailsSqlViews
         SQL
       end
 
-      def disable_referential_integrity_without_views #:nodoc:
+      # name is a bit of a misnomer, as this actually runs the alter on only the tables, not the views.
+      def disable_referential_integrity_with_views #:nodoc:
         if supports_disable_referential_integrity?() then
           execute(tables_without_views.collect { |name| "ALTER TABLE #{quote_table_name(name)} DISABLE TRIGGER ALL" }.join(";"))
         end
